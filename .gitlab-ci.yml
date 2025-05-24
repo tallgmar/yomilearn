@@ -1,4 +1,4 @@
-image: node:24-slim
+image: node:24.3.0-slim
 
 stages:
   - install
@@ -10,6 +10,7 @@ cache:
 
 variables:
   NODE_ENV: test
+  MONGO_URI: "mongodb+srv://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}/${MONGO_DB}?retryWrites=true&w=majority"
 
 before_script:
   - npm ci

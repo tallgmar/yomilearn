@@ -2,6 +2,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
+const mongoUri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_HOST}/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
+
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -18,7 +20,7 @@ app.use('/api/vocab', vocabRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/quiz', quizCheckRoutes);
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
