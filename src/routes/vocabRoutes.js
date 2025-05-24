@@ -2,11 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 const {
-  getAllVocab,
-  addVocab
+  getAllVocabs,
+  addVocab,
+  updateVocab,
+  deleteVocab
 } = require('../controllers/vocabController');
 
-router.get('/', getAllVocab);
+router.get('/', getAllVocabs);
 router.post('/', addVocab);
+router.put('/:id', updateVocab);
+router.delete('/:id', deleteVocab);
 
 module.exports = router;

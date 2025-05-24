@@ -1,30 +1,47 @@
-// Fake in-memory data
-const vocabList = [
-    { kanji: '猫', reading: 'ねこ', meaning: 'cat' },
-    { kanji: '犬', reading: 'いぬ', meaning: 'dog' },
-    { kanji: '水', reading: 'みず', meaning: 'water' },
-  ];
+const Vocab = require('../models/Vocab');
   
-  const getAllVocab = (req, res) => {
-    res.json(vocabList);
-  };
+const getAllVocabs = async (req, res) => {
+  try {
+    const vocabs = await Vocab.find().exec();
+    res.json(vocabs);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch vocabulary list' });
+  }
+};
 
-  const addVocab = (req, res) => {
-    const { kanji, reading, meaning } = req.body;
-  
-    if (!kanji || !reading || !meaning) {
-      return res.status(400).json({ error: 'All fields are required' });
-    }
-  
-    const newWord = { kanji, reading, meaning };
-    vocabList.push(newWord);
-  
-    res.status(201).json({ message: 'Word added', word: newWord });
-  };
-  
-  module.exports = {
-    vocabList,
-    getAllVocab,
-    addVocab,
-  };
-  
+const addVocab = async (req, res) => {
+  try {
+    const newVocab = new Vocab(req.body);
+    const saved = await newVocab.save();
+    res.status(201).json(saved);
+  } catch (error) {
+    res.status(400).json({ error: 'Failed to add vocab' });
+  }
+};
+
+const updateVocab = async (req, res) => {
+  try {
+    const updated = await Vocab.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!updated) return res.status(404).json({ message: 'Not found' });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+const deleteVocab = async (req, res) => {
+  try {
+    const deleted = await Vocab.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Not found' });
+    res.json({ message: 'Deleted successfully' });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+module.exports = {
+  getAllVocabs,
+  addVocab,
+  updateVocab,
+  deleteVocab
+};
