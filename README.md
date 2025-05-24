@@ -70,7 +70,7 @@ Tests are executed automatically through the GitLab CI pipeline on each push.
 To insert initial vocabulary entries into the database, execute:
 
 ```bash
-node seed.js
+node src/scripts/seed.js
 ```
 
 Ensure environment variables are correctly set.
@@ -85,7 +85,3 @@ This project utilizes GitLab CI/CD for continuous integration. The pipeline inst
 - Add user authentication and score tracking
 - Include multiple difficulty levels
 - Deployment to a free hosting provider
-
-## License
-
-This project is licensed under the MIT License.
